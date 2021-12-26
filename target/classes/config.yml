@@ -1,0 +1,28 @@
+show-level-as-prefix: true
+#Set to false to disable the [1] (level number) prefix before
+#players' names. Leave true to keep it.
+send-message-on-levelup: true
+#Set to false to disable the message sent to a player when they level up
+levelup-message: '&aYou leveled up! New server level: %level%'
+
+use-milestones: true
+#Set to false to disable the milestones feature.
+#(Milestones give players rewards for leveling to a certain level)
+prefix-border-color: '7'
+prefix-number-color: 'f'
+#Use color codes WITHOUT the & to determine the colors
+exp-per-level: 10.0
+#The amount of exp required to go from level 1 to level 2.
+#Used as a baseline to determine exp of further levels.
+exp-multiplier: 1.1
+#If everything is set to default, and exp-per-level is 10
+#and exp-multiplier is 1.1, this will take that 10 exp and multiply it
+#1.1 for each level. level 3 requires 11 exp instead of 10 (10 X 1.1).
+#Level 4 requires 12.1 exp instead of 11, and so on.
+exp-on-chat: 0.1
+exp-on-mobkill: 0.4
+exp-on-playerkill: 0.5
+exp-on-blockbreak: 0.001
+exp-on-blockplace: 0.001
+#exp given for an event. SET TO -1.0 TO DISABLE!
+#Request new events, features, or other in the discord: https://discord.gg/xBS7jk6Wtg

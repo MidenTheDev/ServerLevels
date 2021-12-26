@@ -1,0 +1,38 @@
+#The first number is the level at which you want to give a special reward
+#Commands are executed at the console level.
+#Color codes are supported.
+#Please keep milestones in increasing order of level to avoid errors.
+
+#If you do not need any section (commands, items, message) just delete the
+#section.
+
+#Use %player% in place of the player's username.
+milestones:
+  5:
+    commands:
+      - 'eco give %player% 100'
+    messages:
+      - '&aYou''ve reached level 5! You''ve received 100$!'
+  10:
+    commands:
+      - 'give %player% diamond 2'
+      - '/eco give %player% 100'
+    messages:
+      - '&aYou''ve reached level 10! You''ve received 2 diamonds and 100$!'
+  15:
+    commands:
+      - 'give %player% diamond 2'
+      - '/eco give %player% 200'
+    messages:
+      - '&aYou''ve reached level 15! You''ve received 2 diamonds and $200!'
+  20:
+    commands:
+      - 'give %player% diamond 3'
+      - '/eco give %player% 250'
+    messages:
+      - '&aYou''ve reached level 20! You''ve received 3 diamonds and $250!'
+  100:
+    commands:
+      - 'give %player% diamond 8'
+    messages:
+      - '&aYou''ve reached level 100! You''ve received 8 diamonds!'

@@ -1,0 +1,19 @@
+name: ServerLevels
+main: net.cozycosmos.serverlevels.Main
+author: Miden
+version: 1.0.0
+api-version: 1.13
+
+commands:
+  serverlevels:
+    description: Core command for the Server Levels Plugin
+    permission: serverlevels.command
+    usage: /serverlevels
+    aliases: [sl]
+permissions:
+  serverlevels.command:
+    description: Allows use of core command for ServerLevels
+    default: op
+  serverlevels.addexp:
+    description: Gives access to the /sl addexp command
+    default: op
