@@ -16,19 +16,19 @@ milestones:
   10:
     commands:
       - 'give %player% diamond 2'
-      - '/eco give %player% 100'
+      - 'eco give %player% 100'
     messages:
       - '&aYou''ve reached level 10! You''ve received 2 diamonds and 100$!'
   15:
     commands:
       - 'give %player% diamond 2'
-      - '/eco give %player% 200'
+      - 'eco give %player% 200'
     messages:
       - '&aYou''ve reached level 15! You''ve received 2 diamonds and $200!'
   20:
     commands:
       - 'give %player% diamond 3'
-      - '/eco give %player% 250'
+      - 'eco give %player% 250'
     messages:
       - '&aYou''ve reached level 20! You''ve received 3 diamonds and $250!'
   100:
