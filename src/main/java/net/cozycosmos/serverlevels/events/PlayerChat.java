@@ -23,11 +23,12 @@ public class PlayerChat implements Listener {
     public void PlayerChat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
         if(plugin.getConfig().getDouble("exp-on-chat") != -1.0) {
-            Levels.SetLevel(player, plugin.getConfig().getDouble("exp-on-chat"));
+            Levels.setLevel(player, plugin.getConfig().getDouble("exp-on-chat"));
         }
         FileConfiguration data = YamlConfiguration.loadConfiguration(dataYml);
         if (plugin.getConfig().getBoolean("show-level-as-prefix")) {
-            e.setFormat("§"+config.getString("prefix-border-color")+"[§"+config.getString("prefix-number-color")+valueOf(data.getInt("users."+e.getPlayer().getUniqueId().toString()+".level"))+"§"+config.getString("prefix-border-color")+"]§r"+" %s : %s");
+            String DName = e.getPlayer().getDisplayName();
+            e.getPlayer().setDisplayName("§"+config.getString("prefix-border-color")+"[§"+config.getString("prefix-number-color")+valueOf(data.getInt("users."+e.getPlayer().getUniqueId().toString()+".level"))+"§"+config.getString("prefix-border-color")+"]§r"+" "+DName);
 
         }
 

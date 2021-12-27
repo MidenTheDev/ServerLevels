@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Levels {
 
-    public static void SetLevel(Player player, Double expIn) {
+    public static void setLevel(Player player, Double expIn) {
         Levelup levelup = new Levelup(player);
 
         final Main plugin = Main.getPlugin(Main.class);
@@ -21,46 +21,50 @@ public class Levels {
         FileConfiguration data = YamlConfiguration.loadConfiguration(dataYml);
 
         String puuid = player.getUniqueId().toString();
+        if(data.getInt("users."+puuid+".level") < plugin.getConfig().getInt("max-level",100) || plugin.getConfig().getInt("max-level") == 0) {
+            data.set("users."+puuid+".exp", data.getDouble("users."+puuid+".exp") + expIn);
+            Double exp = data.getDouble("users."+puuid+".exp");
+            if (data.getInt("users."+puuid+".level") == 1) {
 
-        data.set("users."+puuid+".exp", data.getDouble("users."+puuid+".exp") + expIn);
-        Double exp = data.getDouble("users."+puuid+".exp");
-        if (data.getInt("users."+puuid+".level") == 1) {
+                if(exp >= plugin.getConfig().getDouble("exp-per-level")) {
+                    data.set("users."+puuid+".level",2);
+                    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(levelup));
 
-            if(exp >= plugin.getConfig().getDouble("exp-per-level")) {
-                data.set("users."+puuid+".level",2);
-                Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(levelup));
+                    data.set("users."+puuid+".exp-to-next-level", plugin.getConfig().getDouble("exp-per-level")+(((data.getInt("users."+player.getUniqueId().toString()+".level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
+                    if(exp >= data.getDouble("users."+puuid+".exp-to-next-level")) {
+                        while (data.getDouble("users."+puuid+".exp-to-next-level") <= exp) {
+                            data.set("users."+puuid+".level", data.getInt("users."+puuid+".level") + 1);
+                            data.set("users."+puuid+".exp-to-next-level", plugin.getConfig().getDouble("exp-per-level")+(((data.getInt("users."+player.getUniqueId().toString()+".level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
 
+                            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(levelup));
+                        }
+                    }
+                }
+            } else if (data.getInt("users."+puuid+".level") <= 0) {
+                data.set("users."+puuid+".level",1);
+            } else if (data.getInt("users."+puuid+".level") > 1) {
                 data.set("users."+puuid+".exp-to-next-level", plugin.getConfig().getDouble("exp-per-level")+(((data.getInt("users."+player.getUniqueId().toString()+".level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
                 if(exp >= data.getDouble("users."+puuid+".exp-to-next-level")) {
                     while (data.getDouble("users."+puuid+".exp-to-next-level") <= exp) {
                         data.set("users."+puuid+".level", data.getInt("users."+puuid+".level") + 1);
                         data.set("users."+puuid+".exp-to-next-level", plugin.getConfig().getDouble("exp-per-level")+(((data.getInt("users."+player.getUniqueId().toString()+".level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
-
                         Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(levelup));
+
                     }
                 }
             }
-        } else if (data.getInt("users."+puuid+".level") <= 0) {
-            data.set("users."+puuid+".level",1);
-        } else if (data.getInt("users."+puuid+".level") > 1) {
-            data.set("users."+puuid+".exp-to-next-level", plugin.getConfig().getDouble("exp-per-level")+(((data.getInt("users."+player.getUniqueId().toString()+".level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
-            if(exp >= data.getDouble("users."+puuid+".exp-to-next-level")) {
-                while (data.getDouble("users."+puuid+".exp-to-next-level") <= exp) {
-                    data.set("users."+puuid+".level", data.getInt("users."+puuid+".level") + 1);
-                    data.set("users."+puuid+".exp-to-next-level", plugin.getConfig().getDouble("exp-per-level")+(((data.getInt("users."+player.getUniqueId().toString()+".level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
-                    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(levelup));
 
-                }
+            try {
+                data.save(dataYml);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        } else {
+            //do nothing
         }
 
-        try {
-            data.save(dataYml);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
-    public static void CheckMilestone(Player player) {
+    public static void checkMilestone(Player player) {
         final Main plugin = Main.getPlugin(Main.class);
         File dataYml = new File(plugin.getDataFolder()+"/data.yml");
         File milestonesYml = new File(plugin.getDataFolder()+"/milestones.yml");

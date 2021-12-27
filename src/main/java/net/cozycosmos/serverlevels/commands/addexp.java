@@ -20,7 +20,7 @@ public class addexp implements CommandExecutor {
                             if(Bukkit.getOfflinePlayer(args[1]).hasPlayedBefore()) {
                                 if(args.length > 2) {
                                     if(isDouble(args[2])) {
-                                        Levels.SetLevel((Player) Bukkit.getOfflinePlayer(args[1]), Double.parseDouble(args[2]));
+                                        Levels.setLevel((Player) Bukkit.getOfflinePlayer(args[1]), Double.parseDouble(args[2]));
                                     } else {
                                         sender.sendMessage(ChatColor.RED + "The amount must be a Double! Instead of 1, try 1.0");
                                     }

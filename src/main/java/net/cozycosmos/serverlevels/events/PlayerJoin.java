@@ -15,14 +15,28 @@ public class PlayerJoin implements Listener {
     File dataYml = new File(plugin.getDataFolder()+"/data.yml");
     FileConfiguration data = YamlConfiguration.loadConfiguration(dataYml);
 
+    private boolean inConfig = false;
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         if (e.getPlayer().hasPlayedBefore()) {
-            //check for them in the config?
+            data.getConfigurationSection("users").getKeys(false).forEach(uuid -> {
+                if (uuid.equals(e.getPlayer().getUniqueId().toString())) {
+                    inConfig = true;
+                }
+            });
+            if(!inConfig) {
+                data.set("users."+e.getPlayer().getUniqueId().toString()+".exp", 0.0);
+                data.set("users."+e.getPlayer().getUniqueId().toString()+".level", 1);
+                data.set("users."+e.getPlayer().getUniqueId().toString()+".lastmilestone", 0);
+                data.set("users."+e.getPlayer().getUniqueId().toString()+".exp-to-next-level", plugin.getConfig().getDouble("exp-per-level"));
+                data.set("users."+e.getPlayer().getUniqueId().toString()+".username", e.getPlayer().getName());
+            }
         } else {
             data.set("users."+e.getPlayer().getUniqueId().toString()+".exp", 0.0);
             data.set("users."+e.getPlayer().getUniqueId().toString()+".level", 1);
             data.set("users."+e.getPlayer().getUniqueId().toString()+".lastmilestone", 0);
+            data.set("users."+e.getPlayer().getUniqueId().toString()+".exp-to-next-level", plugin.getConfig().getDouble("exp-per-level"));
             data.set("users."+e.getPlayer().getUniqueId().toString()+".username", e.getPlayer().getName());
         }
     }

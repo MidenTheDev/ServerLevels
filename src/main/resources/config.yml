@@ -4,7 +4,9 @@ show-level-as-prefix: true
 send-message-on-levelup: true
 #Set to false to disable the message sent to a player when they level up
 levelup-message: '&aYou leveled up! New server level: %level%'
-
+max-level: 100
+#Players will not be able to go above this level. Set to 0 to disable.
+#Maximum level is REQUIRED for several plugins this plugin has support for!
 use-milestones: true
 #Set to false to disable the milestones feature.
 #(Milestones give players rewards for leveling to a certain level)
@@ -18,7 +20,7 @@ exp-multiplier: 1.1
 #If everything is set to default, and exp-per-level is 10
 #and exp-multiplier is 1.1, this will take that 10 exp and multiply it
 #1.1 for each level. level 3 requires 11 exp instead of 10 (10 X 1.1).
-#Level 4 requires 12.1 exp instead of 11, and so on.
+#Level 4 requires 22 exp instead of 11, and so on.
 exp-on-chat: 0.2
 exp-on-mobkill: 0.4
 exp-on-playerkill: 0.6

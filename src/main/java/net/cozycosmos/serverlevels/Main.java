@@ -1,6 +1,5 @@
 package net.cozycosmos.serverlevels;
 
-import com.sun.glass.ui.Window;
 import net.cozycosmos.serverlevels.commands.addexp;
 import net.cozycosmos.serverlevels.events.*;
 import net.cozycosmos.serverlevels.extras.Metrics;
@@ -31,6 +30,7 @@ public class Main extends JavaPlugin {
         registerConfigs();
         registerEvents();
         registerCommands();
+
 
         int pluginId = 13727;
         Metrics metrics = new Metrics(this, pluginId);
@@ -88,5 +88,7 @@ public class Main extends JavaPlugin {
         }
         pm.registerEvents(new PlayerJoin(), this);
     }
+
+
 
 }

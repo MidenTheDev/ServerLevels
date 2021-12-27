@@ -18,7 +18,7 @@ public class LevelupLis implements Listener {
     @EventHandler
     public void onLevelUp(Levelup e) {
         if(plugin.getConfig().getBoolean("use-milestones")) {
-            Levels.CheckMilestone(e.getPlayer());
+            Levels.checkMilestone(e.getPlayer());
         }
         if (plugin.getConfig().getBoolean("send-message-on-levelup")) {
             e.getPlayer().sendMessage(plugin.getConfig().getString("levelup-message").replace('&','§').replaceAll("%level%",String.valueOf(data.getInt("users."+e.getPlayer().getUniqueId().toString()+".level"))));

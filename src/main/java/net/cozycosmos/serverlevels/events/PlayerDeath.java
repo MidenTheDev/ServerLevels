@@ -14,7 +14,7 @@ public class PlayerDeath implements Listener {
         Player p = e.getEntity();
         if (p.getKiller() != null) {
             Player killer = p.getKiller();
-            Levels.SetLevel(killer,plugin.getConfig().getDouble("exp-on-playerkill"));
+            Levels.setLevel(killer,plugin.getConfig().getDouble("exp-on-playerkill"));
         }
     }
 }
