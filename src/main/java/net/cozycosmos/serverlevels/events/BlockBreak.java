@@ -13,6 +13,6 @@ public class BlockBreak implements Listener {
     @EventHandler
     public void onPlace(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        Levels.setLevel(p, plugin.getConfig().getDouble("exp-on-blockbreak"));
+        Levels.setExp(p, plugin.getConfig().getDouble("exp-on-blockbreak"));
     }
 }

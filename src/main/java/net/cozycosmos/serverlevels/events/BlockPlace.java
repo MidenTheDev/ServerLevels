@@ -12,7 +12,7 @@ public class BlockPlace implements Listener {
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        Levels.setLevel(p, plugin.getConfig().getDouble("exp-on-blockplace"));
+        Levels.setExp(p, plugin.getConfig().getDouble("exp-on-blockplace"));
     }
 
 }
