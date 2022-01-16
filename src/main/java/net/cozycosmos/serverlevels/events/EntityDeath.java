@@ -16,7 +16,7 @@ public class EntityDeath implements Listener {
     public void EntityDeath(EntityDeathEvent e) {
         if (e.getEntity().getKiller() != null && e.getEntity().getType() != EntityType.PLAYER) {
             Player killer = e.getEntity().getKiller();
-            Levels.setLevel(killer,plugin.getConfig().getDouble("exp-on-mobkill"));
+            Levels.setExp(killer,plugin.getConfig().getDouble("exp-on-mobkill"));
         }
     }
 

@@ -16,19 +16,19 @@ import static java.lang.String.valueOf;
 public class PlayerChat implements Listener {
     private final Main plugin = Main.getPlugin(Main.class);
     FileConfiguration config = plugin.getConfig();
-    File dataYml = new File(plugin.getDataFolder()+"/data.yml");
-
+    File dataYml;
 
     @EventHandler
     public void PlayerChat(AsyncPlayerChatEvent e){
+        dataYml = new File(plugin.getDataFolder()+"/playerdata/"+e.getPlayer().getUniqueId()+".yml");
         Player player = e.getPlayer();
         if(plugin.getConfig().getDouble("exp-on-chat") != -1.0) {
-            Levels.setLevel(player, plugin.getConfig().getDouble("exp-on-chat"));
+            Levels.setExp(player, plugin.getConfig().getDouble("exp-on-chat"));
         }
         FileConfiguration data = YamlConfiguration.loadConfiguration(dataYml);
         if (plugin.getConfig().getBoolean("show-level-as-prefix")) {
             String DName = e.getPlayer().getDisplayName();
-            e.getPlayer().setDisplayName("§"+config.getString("prefix-border-color")+"[§"+config.getString("prefix-number-color")+valueOf(data.getInt("users."+e.getPlayer().getUniqueId().toString()+".level"))+"§"+config.getString("prefix-border-color")+"]§r"+" "+DName);
+            e.getPlayer().setDisplayName("§"+config.getString("prefix-border-color")+"[§"+config.getString("prefix-number-color")+valueOf(data.getInt("level"))+"§"+config.getString("prefix-border-color")+"]§r"+" "+DName);
 
         }
 
