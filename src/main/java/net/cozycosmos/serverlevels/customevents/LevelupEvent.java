@@ -11,10 +11,14 @@ import org.bukkit.event.player.PlayerEvent;
 public class LevelupEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
     private final Main plugin = Main.getPlugin(Main.class);
+    private String levelSystem;
 
-    public LevelupEvent(Player player) {
+    public LevelupEvent(Player player, String levelsystem) {
         super(player);
+        levelSystem = levelsystem;
     }
+
+    public String getLevelSystem() {return levelSystem;}
 
     public HandlerList getHandlers() {
         return handlers;

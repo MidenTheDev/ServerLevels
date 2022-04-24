@@ -1,7 +1,6 @@
 package net.cozycosmos.serverlevels;
 
 import net.cozycosmos.serverlevels.commands.Core;
-import net.cozycosmos.serverlevels.commands.SetExp;
 import net.cozycosmos.serverlevels.events.*;
 import net.cozycosmos.serverlevels.extras.Metrics;
 import net.cozycosmos.serverlevels.extras.UpdateChecker;
@@ -19,6 +18,9 @@ public class Main extends JavaPlugin {
     public ConsoleCommandSender cs;
 
     File milestonesYml = new File(getDataFolder()+"/milestones.yml");
+    File mobsYml = new File(getDataFolder()+"/mobs.yml");
+    File dataYml = new File(getDataFolder()+"/data.yml");
+    File systemsYml = new File(getDataFolder()+"/levelsystems.yml");
 
 
     public void onEnable() {
@@ -60,6 +62,18 @@ public class Main extends JavaPlugin {
         if(!milestonesYml.exists()){
             cs.sendMessage(ChatColor.GRAY+"[ServerLevels] "+ChatColor.GREEN + "Creating milestones.yml");
             this.saveResource("milestones.yml", false);
+        }else{
+            // do nothing
+        }
+        if(!mobsYml.exists()){
+            cs.sendMessage(ChatColor.GRAY+"[ServerLevels] "+ChatColor.GREEN + "Creating mobs.yml");
+            this.saveResource("mobs.yml", false);
+        }else{
+            // do nothing
+        }
+        if(!systemsYml.exists()){
+            cs.sendMessage(ChatColor.GRAY+"[ServerLevels] "+ChatColor.GREEN + "Creating levelsystems.yml");
+            this.saveResource("levelsystems.yml", false);
         }else{
             // do nothing
         }

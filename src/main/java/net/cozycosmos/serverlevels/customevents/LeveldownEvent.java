@@ -8,10 +8,13 @@ import org.bukkit.event.player.PlayerEvent;
 public class LeveldownEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
     private final Main plugin = Main.getPlugin(Main.class);
+    private String levelSystem;
 
-    public LeveldownEvent(Player player) {
-        super(player);
+    public LeveldownEvent(Player player, String levelsystem) {
+        super(player);        levelSystem = levelsystem;
     }
+
+    public String getLevelSystem() {return levelSystem;}
 
     public HandlerList getHandlers() {
         return handlers;

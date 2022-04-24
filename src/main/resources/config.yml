@@ -1,3 +1,4 @@
+
 show-level-as-prefix: true
 #Set to false to disable the [1] (level number) prefix before
 #players' names. Leave true to keep it.
@@ -27,4 +28,14 @@ exp-on-playerkill: 0.6
 exp-on-blockbreak: 0.01
 exp-on-blockplace: 0.01
 #exp given for an event. SET TO -1.0 TO DISABLE!
+#If disabled they will also disabled them for extra level systems!
+#Set to 0 to use for other systems only
+
+extra-level-systems: false
+#The above allows you to have multiple level systems apart from the default system.
+#This would allow you to, for example, have 2 separate level systems for mining and combat.
+
 #Request new events, features, or other in the discord: https://discord.gg/xBS7jk6Wtg
+
+config-version: "1.2"
+#Do not touch!
