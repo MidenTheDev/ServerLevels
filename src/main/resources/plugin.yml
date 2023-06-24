@@ -1,8 +1,7 @@
 name: ServerLevels
 main: net.cozycosmos.serverlevels.Main
 author: Miden
-version: 1.1.0
-softdepend: [LevelledMobs]
+version: 1.3
 api-version: 1.13
 
 commands:
@@ -20,4 +19,13 @@ permissions:
     default: op
   serverlevels.SetLevel:
     description: Gives access to the /sl set level command
+    default: op
+  serverlevels.reload:
+    description: Gives access to the /sl reload command
+    default: op
+  serverlevels.SetMultiplier:
+    description: Gives access to the /sl set multiplier command
+    default: op
+  serverlevels.SetPlayerMultiplier:
+    description: Gives access to the /sl set multiplier command
     default: op

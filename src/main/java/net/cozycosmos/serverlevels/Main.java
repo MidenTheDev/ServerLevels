@@ -1,24 +1,27 @@
 package net.cozycosmos.serverlevels;
 
 import net.cozycosmos.serverlevels.commands.Core;
-import net.cozycosmos.serverlevels.commands.SetExp;
 import net.cozycosmos.serverlevels.events.*;
+import net.cozycosmos.serverlevels.extras.ConfigUpdater;
 import net.cozycosmos.serverlevels.extras.Metrics;
 import net.cozycosmos.serverlevels.extras.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
 public class Main extends JavaPlugin {
-    public JavaPlugin instance;
     public PluginManager pm;
     public ConsoleCommandSender cs;
 
     File milestonesYml = new File(getDataFolder()+"/milestones.yml");
+    File mobsYml = new File(getDataFolder()+"/mobs.yml");
+    File systemsYml = new File(getDataFolder()+"/levelsystems.yml");
 
 
     public void onEnable() {
@@ -57,9 +60,24 @@ public class Main extends JavaPlugin {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
+        ConfigUpdater configUpdater = new ConfigUpdater();
+        configUpdater.updateConfig(getConfig().getString("config-version"));
+
         if(!milestonesYml.exists()){
             cs.sendMessage(ChatColor.GRAY+"[ServerLevels] "+ChatColor.GREEN + "Creating milestones.yml");
             this.saveResource("milestones.yml", false);
+        }else{
+            // do nothing
+        }
+        if(!mobsYml.exists()){
+            cs.sendMessage(ChatColor.GRAY+"[ServerLevels] "+ChatColor.GREEN + "Creating mobs.yml");
+            this.saveResource("mobs.yml", false);
+        }else{
+            // do nothing
+        }
+        if(!systemsYml.exists()){
+            cs.sendMessage(ChatColor.GRAY+"[ServerLevels] "+ChatColor.GREEN + "Creating levelsystems.yml");
+            this.saveResource("levelsystems.yml", false);
         }else{
             // do nothing
         }
@@ -92,6 +110,15 @@ public class Main extends JavaPlugin {
         }
         pm.registerEvents(new PlayerJoin(), this);
     }
+
+    public void reloadConfigs() {
+        reloadConfig();
+        YamlConfiguration.loadConfiguration(milestonesYml);
+        YamlConfiguration.loadConfiguration(mobsYml);
+        YamlConfiguration.loadConfiguration(systemsYml);
+
+    }
+
 
 
 

@@ -1,3 +1,4 @@
+
 show-level-as-prefix: true
 #Set to false to disable the [1] (level number) prefix before
 #players' names. Leave true to keep it.
@@ -16,15 +17,30 @@ prefix-number-color: 'f'
 exp-per-level: 8.0
 #The amount of exp required to go from level 1 to level 2.
 #Used as a baseline to determine exp of further levels.
-exp-multiplier: 1.1
+exp-required-multiplier: 1.1
 #If everything is set to default, and exp-per-level is 10
-#and exp-multiplier is 1.1, this will take that 10 exp and multiply it
+#and exp-required-multiplier is 1.1, this will take that 10 exp and multiply it
 #1.1 for each level. level 3 requires 11 exp instead of 10 (10 X 1.1).
 #Level 4 requires 22 exp instead of 11, and so on.
+exp-gain-multiplier: 1.0
+#This is used to set the multiplier of the amount of EXP gained.
+#This is useful if you want to have a global server "booster" where EXP
+#gained is increased for a short time. Defaults to 1.0
+#THIS DOES NOT AFFECT CUSTOM LEVEL SYSTEMS!
 exp-on-chat: 0.2
 exp-on-mobkill: 0.4
 exp-on-playerkill: 0.6
 exp-on-blockbreak: 0.01
 exp-on-blockplace: 0.01
 #exp given for an event. SET TO -1.0 TO DISABLE!
+#If disabled they will also disabled them for extra level systems!
+#Set to 0 to use for other systems only
+
+extra-level-systems: false
+#The above allows you to have multiple level systems apart from the default system.
+#This would allow you to, for example, have 2 separate level systems for mining and combat.
+
 #Request new events, features, or other in the discord: https://discord.gg/xBS7jk6Wtg
+
+config-version: "1.3"
+#Do not touch!

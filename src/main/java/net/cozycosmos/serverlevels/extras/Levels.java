@@ -14,25 +14,46 @@ import java.util.List;
 
 public class Levels {
 
-    public static Boolean setExp(Player player, Double expIn) {
-        LevelupEvent levelup = new LevelupEvent(player);
-        LeveldownEvent leveldownEvent = new LeveldownEvent(player);
+
+    public static Boolean setExp(Player player, Double expIn, String levelsystem) {
+        LevelupEvent levelup = new LevelupEvent(player, levelsystem);
+        LeveldownEvent leveldownEvent = new LeveldownEvent(player, levelsystem);
+
+        String path = levelsystem + ".";
+        String systemPath = "systems."+levelsystem+".";
+        File systemsYml;
 
         final Main plugin = Main.getPlugin(Main.class);
+        FileConfiguration config;
         File dataYml = new File(plugin.getDataFolder()+"/playerdata/"+player.getUniqueId()+".yml");
         FileConfiguration data = YamlConfiguration.loadConfiguration(dataYml);
 
-        String puuid = player.getUniqueId().toString();
+        if (path.equals("default.")) {
+            path = "";
+            systemPath = "";
+            config = plugin.getConfig();
+            expIn = expIn*config.getDouble("exp-gain-multiplier")*data.getDouble("multiplier-default",1.0);
+        } else {
+            systemsYml = new File(Main.getPlugin(Main.class).getDataFolder()+"/levelsystems.yml");
 
-        Double newExp = data.getDouble("exp") + expIn;
+            config = YamlConfiguration.loadConfiguration(systemsYml);
+            expIn = expIn*config.getDouble("systems."+levelsystem+".exp-gain-multiplier")*data.getDouble("multiplier-"+levelsystem,1.0);
+
+        }
 
 
-        if(newExp < data.getDouble("exp")) {
-            data.set("exp", newExp);
-            double expToLast = data.getDouble("exp-to-next-level")-(((data.getInt("level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level"));
+
+
+
+        Double newExp = data.getDouble(path+"exp") + expIn;
+
+
+        if(newExp < data.getDouble(path+"exp")) {
+            data.set(path+"exp", newExp);
+            double expToLast = data.getDouble(path+"exp-to-next-level")-(((data.getInt(path+"level")-1) * config.getDouble(systemPath+"exp-required-multiplier")) * config.getDouble(systemPath+"exp-per-level"));
             if (expToLast>newExp) {
-                data.set("exp-to-next-level",expToLast);
-                data.set("level", data.getInt("level")-1);
+                data.set(path+"exp-to-next-level",expToLast);
+                data.set(path+"level", data.getInt(path+"level")-1);
                 Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(leveldownEvent));
 
             }
@@ -43,34 +64,34 @@ public class Levels {
             }
             return true;
         } else {
-            if (data.getInt("level") < plugin.getConfig().getInt("max-level", 0) || plugin.getConfig().getInt("max-level", 0) == 0) {
-                data.set("exp", newExp);
-                Double exp = data.getDouble("exp");
-                if (data.getInt("level") == 1) {
+            if (data.getInt(path+"level") < config.getInt(systemPath+"max-level", 0) || config.getInt(systemPath+"max-level", 0) == 0) {
+                data.set(path+"exp", newExp);
+                Double exp = data.getDouble(path+"exp");
+                if (data.getInt(path+"level") == 1) {
 
-                    if (exp >= plugin.getConfig().getDouble("exp-per-level")) {
-                        data.set("level", 2);
-                        data.set("exp-to-next-level", data.getDouble("exp-to-next-level") + (((data.getInt("level") - 1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
+                    if (exp >= config.getDouble(systemPath+"exp-per-level")) {
+                        data.set(path+"level", 2);
+                        data.set(path+"exp-to-next-level", data.getDouble(path+"exp-to-next-level") + (((data.getInt(path+"level") - 1) * config.getDouble(systemPath+"exp-required-multiplier")) * config.getDouble(systemPath+"exp-per-level")));
                         Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(levelup));
 
-                        if (exp >= data.getDouble("exp-to-next-level")) {
-                            while (data.getDouble("exp-to-next-level") <= exp) {
-                                data.set("level", data.getInt("level") + 1);
+                        if (exp >= data.getDouble(path+"exp-to-next-level")) {
+                            while (data.getDouble(path+"exp-to-next-level") <= exp) {
+                                data.set(path+"level", data.getInt(path+"level") + 1);
 
                                 Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(levelup));
-                                data.set("exp-to-next-level", data.getDouble("exp-to-next-level") + (((data.getInt("level") - 1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
+                                data.set(path+"exp-to-next-level", data.getDouble(path+"exp-to-next-level") + (((data.getInt(path+"level") - 1) * config.getDouble(systemPath+"exp-required-multiplier")) * config.getDouble(systemPath+"exp-per-level")));
                             }
                         }
                     }
-                } else if (data.getInt("level") <= 0) {
-                    data.set("level", 1);
-                    data.set("exp-to-next-level", plugin.getConfig().getDouble("exp-per-level"));
-                } else if (data.getInt("level") > 1) {
-                    if (exp >= data.getDouble("exp-to-next-level")) {
-                        while (data.getDouble("exp-to-next-level") <= exp) {
-                            data.set("level", data.getInt("level") + 1);
+                } else if (data.getInt(path+"level") <= 0) {
+                    data.set(path+"level", 1);
+                    data.set(path+"exp-to-next-level", config.getDouble(systemPath+"exp-per-level"));
+                } else if (data.getInt(path+"level") > 1) {
+                    if (exp >= data.getDouble(path+"exp-to-next-level")) {
+                        while (data.getDouble(path+"exp-to-next-level") <= exp) {
+                            data.set(path+"level", data.getInt(path+"level") + 1);
                             Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(levelup));
-                            data.set("exp-to-next-level", data.getDouble("exp-to-next-level") + (((data.getInt("level") - 1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
+                            data.set(path+"exp-to-next-level", data.getDouble(path+"exp-to-next-level") + (((data.getInt(path+"level") - 1) * config.getDouble(systemPath+"exp-required-multiplier")) * config.getDouble(systemPath+"exp-per-level")));
 
                         }
                     }
@@ -89,30 +110,41 @@ public class Levels {
 
     }
 
-    public static boolean checkMilestone(Player player) {
+    public static boolean checkMilestone(Player player, String levelsystem) {
+        String path = levelsystem + ".";
+        String systemPath = levelsystem;
+
         final Main plugin = Main.getPlugin(Main.class);
+
+        if (path.equals("default.")) {
+            path = "";
+            systemPath = "milestones";
+        }
+        final String finalPath = path;
+        final String finalSystemPath = systemPath;
+
         File dataYml = new File(plugin.getDataFolder()+"/playerdata/"+player.getUniqueId()+".yml");
         File milestonesYml = new File(plugin.getDataFolder()+"/milestones.yml");
         FileConfiguration data = YamlConfiguration.loadConfiguration(dataYml);
         FileConfiguration milestones = YamlConfiguration.loadConfiguration(milestonesYml);
 
         final Boolean[] foundMilestone = {false};
-        String puuid = player.getUniqueId().toString();
 
-        int level = data.getInt("level");
+        int level = data.getInt(path+"level");
 
-            milestones.getConfigurationSection("milestones").getKeys(false).forEach(milestone -> {
+            milestones.getConfigurationSection(systemPath).getKeys(false).forEach(milestone -> {
+
                 if (level == Integer.parseInt(milestone)) {
-                    data.set("lastmilestone",Integer.parseInt(milestone));
+                    data.set(finalPath+"lastmilestone",Integer.parseInt(milestone));
 
-                    if(milestones.get("milestones."+milestone+".commands") != null) {
-                        List<String> commands = milestones.getStringList("milestones."+milestone+".commands");
+                    if(milestones.get(finalSystemPath+"."+milestone+".commands") != null) {
+                        List<String> commands = milestones.getStringList(finalSystemPath+"."+milestone+".commands");
                         commands.forEach(cmd -> {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("%player%",player.getName()));
                         });
                     }
-                    if(milestones.get("milestones."+milestone+".messages") != null) {
-                        List<String> messages = milestones.getStringList("milestones."+milestone+".messages");
+                    if(milestones.get(finalSystemPath+"."+milestone+".messages") != null) {
+                        List<String> messages = milestones.getStringList(finalSystemPath+"."+milestone+".messages");
                         messages.forEach(msg -> {
                             player.sendMessage(msg.replace('&','§'));
                         });
@@ -131,34 +163,52 @@ public class Levels {
         return foundMilestone[0];
     }
 
-    public static Boolean setLevel(Player player, int newLevel, Boolean changeExp) {
+    public static Boolean setLevel(Player player, int newLevel, Boolean changeExp, String levelsystem) {
         final Main plugin = Main.getPlugin(Main.class);
         File dataYml = new File(plugin.getDataFolder()+"/playerdata/"+player.getUniqueId()+".yml");
         FileConfiguration data = YamlConfiguration.loadConfiguration(dataYml);
 
-        LevelupEvent levelup = new LevelupEvent(player);
-        LeveldownEvent leveldownEvent = new LeveldownEvent(player);
+        LevelupEvent levelup = new LevelupEvent(player,levelsystem);
+        LeveldownEvent leveldownEvent = new LeveldownEvent(player, levelsystem);
 
         String expPath = "exp";
 
+        String path = levelsystem + ".";
+        String systemPath = "systems."+levelsystem+".";
+        File systemsYml;
 
-        if (newLevel <= plugin.getConfig().getInt("max-level",0) || plugin.getConfig().getInt("max-level", 0) == 0) {
-            if(newLevel > data.getInt("level")) {
+        FileConfiguration config;
+
+        if (path.equals("default.")) {
+            path = "";
+            systemPath = "";
+            config = plugin.getConfig();
+
+        } else {
+            expPath = levelsystem+".exp";
+            systemsYml = new File(Main.getPlugin(Main.class).getDataFolder()+"/levelsystems.yml");
+
+            config = YamlConfiguration.loadConfiguration(systemsYml);
+        }
+
+
+        if (newLevel <= config.getInt(systemPath+"max-level",0) || config.getInt(systemPath+"max-level", 0) == 0) {
+            if(newLevel > data.getInt(path+"level")) {
                 Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(levelup));
-                data.set("exp-to-next-level", data.getDouble("exp-to-next-level")+(((data.getInt("level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
+                data.set(path+"exp-to-next-level", data.getDouble(path+"exp-to-next-level")+(((data.getInt(path+"level")-1) * config.getDouble(systemPath+"exp-required-multiplier")) * config.getDouble(systemPath+"exp-per-level")));
 
-            } else if (newLevel < data.getInt("level")) {
+            } else if (newLevel < data.getInt(path+"level")) {
                 Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().getPluginManager().callEvent(leveldownEvent));
             }
-            data.set("level", newLevel);
+            data.set(path+"level", newLevel);
 
             if (changeExp) {
                 if (newLevel == 1) {
                     data.set(expPath, 0);
                 } else if (newLevel >= 2){
-                    data.set("exp-to-next-level", data.getDouble("exp-to-next-level")+(((data.getInt("level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level")));
-                    Double expToNext = ((data.getInt("level")-1) * plugin.getConfig().getDouble("exp-multiplier")) * plugin.getConfig().getDouble("exp-per-level");
-                    data.set(expPath, data.getDouble("exp-to-next-level")-expToNext);
+                    data.set(path+"exp-to-next-level", data.getDouble(path+"exp-to-next-level")+(((data.getInt(path+"level")-1) * config.getDouble(systemPath+"exp-required-multiplier")) * config.getDouble(systemPath+"exp-per-level")));
+                    Double expToNext = ((data.getInt(path+"level")-1) * config.getDouble(systemPath+"exp-required-multiplier")) * config.getDouble(systemPath+"exp-per-level");
+                    data.set(expPath, data.getDouble(path+"exp-to-next-level")-expToNext);
                 }
             }
             try {
@@ -173,20 +223,27 @@ public class Levels {
 
     }
 
-    public static int getLevel(Player player) {
+    public static int getLevel(Player player, String levelsystem) {
         final Main plugin = Main.getPlugin(Main.class);
         File dataYml = new File(plugin.getDataFolder()+"/playerdata/"+player.getUniqueId()+".yml");
         FileConfiguration data = YamlConfiguration.loadConfiguration(dataYml);
+        String path = levelsystem+".";
+        if (levelsystem.equals("default")) {
+            path = "";
+        }
 
-        return data.getInt("level");
+        return data.getInt(path+"level");
     }
 
-    public static Double getExp(Player player) {
+    public static Double getExp(Player player, String levelsystem) {
         final Main plugin = Main.getPlugin(Main.class);
         File dataYml = new File(plugin.getDataFolder()+"/playerdata/"+player.getUniqueId()+".yml");
         FileConfiguration data = YamlConfiguration.loadConfiguration(dataYml);
-
-        return data.getDouble("exp");
+        String path = levelsystem+".";
+        if (levelsystem.equals("default")) {
+            path = "";
+        }
+        return data.getDouble(path+"exp");
     }
 
 

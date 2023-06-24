@@ -1,0 +1,20 @@
+ENDERMAN: 0.01
+#Add a mob's name and an amount after it to set a custom exp amount for that mob!
+#0 and negative numbers are valid!
+#Mob types can be found here: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/EntityType.html
+
+#Non-mobs:
+ARMOR_STAND: 0.0
+BOAT: 0.0
+ITEM_FRAME: 0.0
+GLOW_ITEM_FRAME: 0.0
+MINECART: 0.0
+MINECART_CHEST: 0.0
+MINECART_COMMAND: 0.0
+MINECART_FURNACE: 0.0
+MINECART_HOPPER: 0.0
+MINECART_MOB_SPAWNER: 0.0
+MINECART_TNT: 0.0
+PAINTING: 0.0
+SHULKER_BULLET: 0.0
+UNKNOWN: 0.0

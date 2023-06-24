@@ -36,3 +36,18 @@ milestones:
       - 'give %player% diamond 8'
     messages:
       - '&aYou''ve reached level 100! You''ve received 8 diamonds!'
+
+
+#Define milestones for extra leveling systems as follows:
+mining:
+  5:
+    commands:
+      - 'give %player% diamond_pickaxe 1'
+    messages:
+      - '&aYou''ve reached mining level 5! You''ve received a Diamond Pickaxe!'
+combat:
+  5:
+    commands:
+      - 'give %player% diamond_sword 1'
+    messages:
+      - '&aYou''ve reached combat level 5! You''ve received a Diamond Sword!'

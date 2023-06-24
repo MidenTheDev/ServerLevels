@@ -1,0 +1,27 @@
+#This file does nothing if extra-level-systems is set to false in your config!
+#This file is to create and customize the extra leveling systems.
+#The main system set up in the config.yml will still run alongside these!
+
+systems:
+  mining:
+    exp-on-chat: -1.0
+    exp-on-mobkill: -1.0
+    exp-on-playerkill: -1.0
+    exp-on-blockbreak: 0.1
+    exp-on-blockplace: -1.0
+    levelup-message: '&aYou leveled up! New mining level: %level%'
+    max-level: 20
+    exp-per-level: 8
+    exp-required-multiplier: 1.1
+    exp-gain-multiplier: 1.0
+  combat:
+    exp-on-chat: -1.0
+    exp-on-mobkill: 0.4
+    exp-on-playerkill: 0.6
+    exp-on-blockbreak: -1.0
+    exp-on-blockplace: -1.0
+    levelup-message: '&aYou leveled up! New combat level: %level%'
+    max-level: 20
+    exp-per-level: 8
+    exp-required-multiplier: 1.1
+    exp-gain-multiplier: 1.0
