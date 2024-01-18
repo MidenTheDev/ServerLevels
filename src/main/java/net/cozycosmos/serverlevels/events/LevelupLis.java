@@ -26,17 +26,19 @@ public class LevelupLis implements Listener {
         systemsYml = new File(Main.getPlugin(Main.class).getDataFolder()+"/levelsystems.yml");
         systems = YamlConfiguration.loadConfiguration(systemsYml);
         levelSystem = e.getLevelSystem();
-
+        Bukkit.getServer().getConsoleSender().sendMessage("Check3 " + levelSystem);
         if(plugin.getConfig().getBoolean("use-milestones")) {
             Levels.checkMilestone(e.getPlayer(), levelSystem);
         }
         if (plugin.getConfig().getBoolean("send-message-on-levelup")) {
             if(levelSystem.equals("default")){
                 e.getPlayer().sendMessage(plugin.getConfig().getString("levelup-message").replace('&','§').replaceAll("%level%",String.valueOf(Levels.getLevel(e.getPlayer(),e.getLevelSystem()))));
+            } else {
+                e.getPlayer().sendMessage(systems.getString("systems."+levelSystem+".levelup-message").replace('&','§').replaceAll("%level%",String.valueOf(Levels.getLevel(e.getPlayer(),e.getLevelSystem()))));
+
             }
 
-            e.getPlayer().sendMessage(systems.getString("systems."+levelSystem+".levelup-message").replace('&','§').replaceAll("%level%",String.valueOf(Levels.getLevel(e.getPlayer(),e.getLevelSystem()))));
-        }
+            }
 
 
 }}
